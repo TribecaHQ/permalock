@@ -16,11 +16,21 @@
       let
         pkgs = (import nixpkgs { inherit system; })
           // saber-overlay.packages.${system};
+
         anchor = pkgs.anchor-0_22_0;
+        rust-build-common = with pkgs;
+          [ pkgconfig openssl libiconv ]
+          ++ (pkgs.lib.optionals pkgs.stdenv.isLinux ([ udev ]))
+          ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
+            pkgs.darwin.apple_sdk.frameworks.AppKit
+            pkgs.darwin.apple_sdk.frameworks.IOKit
+            pkgs.darwin.apple_sdk.frameworks.Foundation
+          ]);
+
         ci = pkgs.buildEnv {
           name = "ci";
           paths = with pkgs;
-            (pkgs.lib.optionals pkgs.stdenv.isLinux ([ udev ])) ++ [
+            [
               solana-basic
               anchor
 
@@ -28,23 +38,13 @@
               nodejs
               yarn
               python3
-
-              pkgconfig
-              openssl
               gnused
-
-              libiconv
-            ] ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
-              pkgs.darwin.apple_sdk.frameworks.AppKit
-              pkgs.darwin.apple_sdk.frameworks.IOKit
-              pkgs.darwin.apple_sdk.frameworks.Foundation
-            ]);
+            ] ++ rust-build-common;
         };
         env-release = pkgs.buildEnv {
           name = "env-release";
           paths = with pkgs;
-            [ rust-stable cargo-workspaces pkgconfig openssl ]
-            ++ (pkgs.lib.optionals pkgs.stdenv.isLinux ([ udev ]));
+            [ rust-stable cargo-workspaces ] ++ rust-build-common;
         };
       in {
         packages = {
@@ -54,12 +54,12 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             ci
-            anchor
-            rustup
+
             cargo-deps
-            gh
             cargo-readme
+            gh
             jq
+            rustup
           ];
         };
       });
