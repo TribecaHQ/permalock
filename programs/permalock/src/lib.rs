@@ -20,7 +20,7 @@
 //!
 //! # Address
 //!
-//! - [`PLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd`](https://explorer.solana.com/address/DPLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd)
+//! - [`PLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd`](https://explorer.solana.com/address/PLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd)
 //!
 //! # License
 //!
