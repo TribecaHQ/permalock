@@ -34,6 +34,7 @@ pub struct CreatePermalock<'info> {
     pub permalock_pending_tokens: Account<'info, TokenAccount>,
 
     /// [Permalock::owner].
+    /// CHECK: This can be an arbitrary account.
     pub owner: UncheckedAccount<'info>,
 
     /// Payer.

@@ -14,6 +14,7 @@ pub struct SetVoteDelegate<'info> {
     pub escrow: Account<'info, Escrow>,
 
     /// The new vote delegate.
+    /// CHECK: This can be any account.
     pub new_delegate: UncheckedAccount<'info>,
 
     /// The [Permalock::owner]. This is usually a DAO.

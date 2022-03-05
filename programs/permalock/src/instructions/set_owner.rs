@@ -13,6 +13,7 @@ pub struct SetOwner<'info> {
     pub owner: Signer<'info>,
 
     /// New owner.
+    /// CHECK: This can be any account.
     pub new_owner: UncheckedAccount<'info>,
 }
 
