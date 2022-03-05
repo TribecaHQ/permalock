@@ -15,11 +15,15 @@ Permalock: Tribeca vote escrows with infinite lockup durations.
 
 ## About
 
-The Permalock program allows the creation of *permalocks*: vote escrows which are always locked to the maximum duration.
+The Permalock program allows the creation of _permalocks_: vote escrows which are always locked to the maximum duration.
 
 It works by allowing any user to refresh the lockup period of the vote escrow to the maximum period,
 ensuring that the owner of the Permalock can never unstake the tokens. Since the Tribeca DAO holds the program
 upgrade keys, a DAO can be certain that a permalock will never be unlocked, ever.
+
+## Documentation
+
+Detailed documentation may be found on the [Tribeca Documentation site.](https://docs.tribeca.so)
 
 ## Usage
 

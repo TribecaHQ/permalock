@@ -8,6 +8,10 @@
 //! ensuring that the owner of the Permalock can never unstake the tokens. Since the Tribeca DAO holds the program
 //! upgrade keys, a DAO can be certain that a permalock will never be unlocked, ever.
 //!
+//! # Documentation
+//!
+//! Detailed documentation may be found on the [Tribeca Documentation site.](https://docs.tribeca.so)
+//!
 //! # Usage
 //!
 //! ## Locking tokens
