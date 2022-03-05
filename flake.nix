@@ -16,14 +16,51 @@
       let
         pkgs = (import nixpkgs { inherit system; })
           // saber-overlay.packages.${system};
-        ci = import ./ci.nix { inherit pkgs; };
+        anchor = pkgs.anchor-0_22_0;
+        ci = pkgs.buildEnv {
+          name = "ci";
+          paths = with pkgs;
+            (pkgs.lib.optionals pkgs.stdenv.isLinux ([ udev ])) ++ [
+              solana-basic
+              anchor
+
+              # sdk
+              nodejs
+              yarn
+              python3
+
+              pkgconfig
+              openssl
+              gnused
+
+              libiconv
+            ] ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
+              pkgs.darwin.apple_sdk.frameworks.AppKit
+              pkgs.darwin.apple_sdk.frameworks.IOKit
+              pkgs.darwin.apple_sdk.frameworks.Foundation
+            ]);
+        };
+        env-release = pkgs.buildEnv {
+          name = "env-release";
+          paths = with pkgs;
+            [ rust-stable cargo-workspaces pkgconfig openssl ]
+            ++ (pkgs.lib.optionals pkgs.stdenv.isLinux ([ udev ]));
+        };
       in {
         packages = {
-          inherit ci;
-          inherit (pkgs) cargo-workspaces;
+          inherit ci env-release;
+          inherit (pkgs) cargo-workspaces rust-stable;
         };
         devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [ ci rustup cargo-deps gh cargo-readme ];
+          buildInputs = with pkgs; [
+            ci
+            anchor
+            rustup
+            cargo-deps
+            gh
+            cargo-readme
+            jq
+          ];
         };
       });
 }

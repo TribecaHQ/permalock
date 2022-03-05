@@ -25,47 +25,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Rust nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          override: true
-          profile: minimal
-          toolchain: ${{ env.RUST_TOOLCHAIN }}
-          components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v1
       - name: Run fmt
-        run: cargo fmt -- --check
+        run: nix shell .#rust-stable --command cargo fmt -- --check
       - name: Run clippy
-        run: cargo clippy --all-targets -- --deny=warnings
+        run: nix shell .#rust-stable --command cargo clippy --all-targets -- --deny=warnings
       - name: Check if publish works
-        run: cargo publish --no-verify --dry-run
+        run: nix shell .#rust-stable --command cargo publish --no-verify --dry-run
 
   unit-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Rust nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          override: true
-          profile: minimal
-          toolchain: ${{ env.RUST_TOOLCHAIN }}
-          components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v1
       - name: Run unit tests
-        run: cargo test --lib
+        run: nix shell .#rust-stable --command cargo test --lib
 
   doc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Rust nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          override: true
-          profile: minimal
-          toolchain: ${{ env.RUST_TOOLCHAIN }}
-          components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v1
       - name: Generate docs
-        run: cargo doc
+        run: nix shell .#rust-stable --command cargo doc
