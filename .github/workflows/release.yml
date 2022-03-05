@@ -68,7 +68,7 @@ jobs:
 
       - uses: Swatinem/rust-cache@v1
       - name: Publish crates
-        run: nix shell .#env-release --command cargo workspaces publish --from-git --yes --skip-published --token ${{ secrets.CARGO_PUBLISH_TOKEN }}
+        run: nix shell .#env-release --command cargo publish --token ${{ secrets.CARGO_PUBLISH_TOKEN }}
 
   release-binaries:
     runs-on: ubuntu-latest
