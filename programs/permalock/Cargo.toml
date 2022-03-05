@@ -1,6 +1,6 @@
 [package]
 name = "permalock"
-version = "0.1.0"
+version = "0.1.1"
 description = "Tribeca voting escrows with infinite lockup."
 edition = "2021"
 homepage = "https://tribeca.so"
