@@ -1,0 +1,28 @@
+[package]
+name = "permalock"
+version = "0.1.0"
+description = "Tribeca voting escrows with infinite lockup."
+edition = "2021"
+homepage = "https://tribeca.so"
+repository = "https://github.com/TribecaHQ/permalock"
+authors = ["Tribeca DAO <team@tribeca.so>"]
+license = "AGPL-3.0"
+keywords = ["solana", "anchor", "governance", "vetoken"]
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "permalock"
+path = "src/lib.rs"
+
+[features]
+no-entrypoint = []
+no-idl = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = "^0.22"
+anchor-spl = "^0.22"
+locked-voter = { version = "^0.5", features = ["cpi"] }
+num-traits = "0.2"
+vipers = "^2"
