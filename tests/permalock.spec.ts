@@ -157,16 +157,14 @@ describe("Permalock", () => {
         });
       await expectTX(permalockTX, "Create the Permalock").to.be.fulfilled;
 
-      // delegate is admin
+      // delegate is permalock
       {
         const permalockData =
           await adminSDK.permalock.program.account.permalock.fetch(permalock);
         const escrowData = await TRIBECA_CODERS.LockedVoter.getProgram(
           adminSDK.provider
         ).account.escrow.fetch(permalockData.escrow);
-        expect(escrowData.voteDelegate).to.eqAddress(
-          adminSDK.provider.walletKey
-        );
+        expect(escrowData.voteDelegate).to.eqAddress(permalock);
       }
 
       await assertTXThrows(
@@ -205,7 +203,7 @@ describe("Permalock", () => {
       await assertTXSuccess(
         await adminSDK.permalock.setVoteDelegate({
           permalock,
-          newDelegate: stakerSDK.provider.walletKey,
+          newDelegate: adminSDK.provider.walletKey,
         })
       );
 
