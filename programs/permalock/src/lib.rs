@@ -24,7 +24,19 @@
 //!
 //! # Address
 //!
-//! - [`PLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd`](https://explorer.solana.com/address/PLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd)
+//! Program addresses are the same on devnet, testnet, and mainnet-beta.
+//!
+//! - Permalock: [`PLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd`](https://explorer.solana.com/address/PLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd)
+//!
+//! # Contribution
+//!
+//! Thank you for your interest in contributing to Tribeca Protocol! All contributions are welcome no matter how big or small. This includes
+//! (but is not limited to) filing issues, adding documentation, fixing bugs, creating examples, and implementing features.
+//!
+//! When contributing, please make sure your code adheres to some basic coding guidlines:
+//!
+//! - Code must be formatted with the configured formatters (e.g. `rustfmt` and `prettier`).
+//! - Comment lines should be no longer than 80 characters and written with proper grammar and punctuation.
 //!
 //! # License
 //!
