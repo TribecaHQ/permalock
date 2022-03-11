@@ -208,12 +208,11 @@ describe("Permalock", () => {
           newOwner: stakerSDK.provider.wallet.publicKey,
         })
       );
-      await assertTXThrows(
+      await assertTXSuccess(
         adminSDK.permalock.setOwner({
           permalock,
           newOwner: stakerSDK.provider.wallet.publicKey,
-        }),
-        PermalockErrors.UnauthorizedNotOwnerSetter
+        })
       );
       await assertTXThrows(
         stakerSDK.permalock.setOwner({
