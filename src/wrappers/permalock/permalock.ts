@@ -55,12 +55,14 @@ export class PermalockWrapper {
     lockerMint,
     baseKP = Keypair.generate(),
     owner = this.provider.wallet.publicKey,
+    ownerSetter = SystemProgram.programId,
     payer = this.provider.wallet.publicKey,
   }: {
     locker: PublicKey;
     lockerMint?: PublicKey;
     baseKP?: Signer;
     owner?: PublicKey;
+    ownerSetter?: PublicKey;
     payer?: PublicKey;
   }): Promise<{
     permalock: PublicKey;
@@ -113,6 +115,7 @@ export class PermalockWrapper {
               escrow,
               permalockPendingTokens: pendingTokensATA.address,
               owner,
+              ownerSetter,
               payer,
               systemProgram: SystemProgram.programId,
               lockedVoterProgram: TRIBECA_ADDRESSES.LockedVoter,
@@ -187,18 +190,18 @@ export class PermalockWrapper {
    */
   setOwner({
     permalock,
-    owner = this.provider.wallet.publicKey,
+    ownerSetter = this.provider.wallet.publicKey,
     newOwner,
   }: {
     permalock: PublicKey;
-    owner?: PublicKey;
+    ownerSetter?: PublicKey;
     newOwner: PublicKey;
   }) {
     return this.provider.newTX([
       this.program.instruction.setOwner({
         accounts: {
           permalock,
-          owner,
+          ownerSetter,
           newOwner,
         },
       }),

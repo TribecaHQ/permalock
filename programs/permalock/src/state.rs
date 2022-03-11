@@ -24,4 +24,6 @@ pub struct Permalock {
 
     /// Can modify the vote delegate of the escrow. This is usually a DAO.
     pub owner: Pubkey,
+    /// Can modify the owner of the [Permalock]. Set this to [system_program::ID] to ensure the escrow is non-transferrable.
+    pub owner_setter: Pubkey,
 }

@@ -37,6 +37,10 @@ pub struct CreatePermalock<'info> {
     /// CHECK: This can be an arbitrary account.
     pub owner: UncheckedAccount<'info>,
 
+    /// [Permalock::owner_setter].
+    /// CHECK: This can be an arbitrary account.
+    pub owner_setter: UncheckedAccount<'info>,
+
     /// Payer.
     #[account(mut)]
     pub payer: Signer<'info>,
@@ -59,6 +63,7 @@ impl<'info> CreatePermalock<'info> {
         permalock.pending_tokens = self.permalock_pending_tokens.key();
 
         permalock.owner = self.owner.key();
+        permalock.owner_setter = self.owner_setter.key();
 
         Ok(())
     }

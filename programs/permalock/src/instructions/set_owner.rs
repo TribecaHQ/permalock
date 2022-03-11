@@ -9,8 +9,8 @@ pub struct SetOwner<'info> {
     #[account(mut)]
     pub permalock: AccountLoader<'info, Permalock>,
 
-    /// [Permalock::owner].
-    pub owner: Signer<'info>,
+    /// [Permalock::owner_setter].
+    pub owner_setter: Signer<'info>,
 
     /// New owner.
     /// CHECK: This can be any account.
@@ -20,7 +20,11 @@ pub struct SetOwner<'info> {
 impl<'info> SetOwner<'info> {
     fn set_owner(&self) -> Result<()> {
         let permalock = &mut self.permalock.load_mut()?;
-        assert_keys_eq!(self.owner, permalock.owner, UnauthorizedNotOwner);
+        assert_keys_eq!(
+            self.owner_setter,
+            permalock.owner_setter,
+            UnauthorizedNotOwnerSetter
+        );
         permalock.owner = self.new_owner.key();
         Ok(())
     }
