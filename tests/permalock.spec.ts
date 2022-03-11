@@ -103,47 +103,6 @@ describe("Permalock", () => {
   });
 
   describe("owner only", () => {
-    it("set owner", async () => {
-      const { lockerW, govToken } = await setupEnvironment({
-        staker: stakerSDK.provider,
-        admin: adminSDK.provider,
-        whitelistEnabled: false,
-      });
-      const { permalock, tx: permalockTX } =
-        await adminSDK.permalock.createPermalock({
-          locker: lockerW.locker,
-          lockerMint: govToken.mintAccount,
-        });
-      await expectTX(permalockTX, "Create the Permalock").to.be.fulfilled;
-
-      await assertTXThrows(
-        stakerSDK.permalock.setOwner({
-          permalock,
-          newOwner: stakerSDK.provider.wallet.publicKey,
-        }),
-        PermalockErrors.UnauthorizedNotOwner
-      );
-      await assertTXSuccess(
-        adminSDK.permalock.setOwner({
-          permalock,
-          newOwner: stakerSDK.provider.wallet.publicKey,
-        })
-      );
-      await assertTXThrows(
-        adminSDK.permalock.setOwner({
-          permalock,
-          newOwner: stakerSDK.provider.wallet.publicKey,
-        }),
-        PermalockErrors.UnauthorizedNotOwner
-      );
-      await assertTXSuccess(
-        stakerSDK.permalock.setOwner({
-          permalock,
-          newOwner: adminSDK.provider.wallet.publicKey,
-        })
-      );
-    });
-
     it("set vote delegate", async () => {
       const { lockerW, govToken } = await setupEnvironment({
         staker: stakerSDK.provider,
@@ -218,6 +177,79 @@ describe("Permalock", () => {
           adminSDK.provider.walletKey
         );
       }
+    });
+  });
+
+  describe("setOwner", () => {
+    it("set owner may only be called by owner setter", async () => {
+      const { lockerW, govToken } = await setupEnvironment({
+        staker: stakerSDK.provider,
+        admin: adminSDK.provider,
+        whitelistEnabled: false,
+      });
+      const { permalock, tx: permalockTX } =
+        await adminSDK.permalock.createPermalock({
+          locker: lockerW.locker,
+          lockerMint: govToken.mintAccount,
+          ownerSetter: adminSDK.provider.walletKey,
+        });
+      await expectTX(permalockTX, "Create the Permalock").to.be.fulfilled;
+
+      await assertTXThrows(
+        stakerSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
+      await assertTXSuccess(
+        adminSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        })
+      );
+      await assertTXSuccess(
+        adminSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        })
+      );
+      await assertTXThrows(
+        stakerSDK.permalock.setOwner({
+          permalock,
+          newOwner: adminSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
+    });
+
+    it("owner setter defaults to system program", async () => {
+      const { lockerW, govToken } = await setupEnvironment({
+        staker: stakerSDK.provider,
+        admin: adminSDK.provider,
+        whitelistEnabled: false,
+      });
+      const { permalock, tx: permalockTX } =
+        await adminSDK.permalock.createPermalock({
+          locker: lockerW.locker,
+          lockerMint: govToken.mintAccount,
+        });
+      await expectTX(permalockTX, "Create the Permalock").to.be.fulfilled;
+
+      await assertTXThrows(
+        stakerSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
+      await assertTXThrows(
+        adminSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
     });
   });
 });

@@ -52,9 +52,8 @@ mod instructions;
 mod macros;
 mod state;
 
-pub use state::*;
-
 use instructions::*;
+pub use state::*;
 
 declare_id!("PLKZAXAYmZSfQv61tL2XALX4c14fcEhJj2CJhU1KcKd");
 
@@ -103,7 +102,7 @@ pub mod permalock {
     ///
     /// # Permissions
     ///
-    /// Must be called by the [Permalock::owner].
+    /// Must be called by the [Permalock::owner_setter].
     #[access_control(ctx.accounts.validate())]
     pub fn set_owner(ctx: Context<SetOwner>) -> Result<()> {
         set_owner::handler(ctx)
@@ -115,18 +114,6 @@ pub mod permalock {
 pub enum ErrorCode {
     #[msg("Only the owner of the Permalock may execute this instruction.")]
     UnauthorizedNotOwner,
-    #[msg("Only the operator of the Permalock may execute this instruction.")]
-    UnauthorizedNotOperator,
-    #[msg("Current rewards epoch must be non-zero to copy.")]
-    CopyRewardsEpochIsZero,
-    #[msg("Provided epoch gauge must be of the current rewards epoch.")]
-    CopyWrongEpochGauge,
-    #[msg("The supplied token of appreciation may no longer be minted.")]
-    TAPExpired,
-    #[msg("The gauge mapping is not enabled.")]
-    GaugeMappingNotEnabled,
-    #[msg("The TAP decimals must be equivalent to the staked token's decimals.")]
-    TAPDecimalMismatch,
-    #[msg("Only the benefactor of the TAP may execute this instruction.")]
-    UnauthorizedNotBenefactor,
+    #[msg("Only the owner setter of the Permalock may execute this instruction.")]
+    UnauthorizedNotOwnerSetter,
 }
