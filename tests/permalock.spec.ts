@@ -180,44 +180,48 @@ describe("Permalock", () => {
     });
   });
 
-  it("set owner may only be called by owner setter", async () => {
-    const { lockerW, govToken } = await setupEnvironment({
-      staker: stakerSDK.provider,
-      admin: adminSDK.provider,
-      whitelistEnabled: false,
-    });
-    const { permalock, tx: permalockTX } =
-      await adminSDK.permalock.createPermalock({
-        locker: lockerW.locker,
-        lockerMint: govToken.mintAccount,
+  describe("setOwner", () => {
+    it("set owner may only be called by owner setter", async () => {
+      const { lockerW, govToken } = await setupEnvironment({
+        staker: stakerSDK.provider,
+        admin: adminSDK.provider,
+        whitelistEnabled: false,
       });
-    await expectTX(permalockTX, "Create the Permalock").to.be.fulfilled;
+      const { permalock, tx: permalockTX } =
+        await adminSDK.permalock.createPermalock({
+          locker: lockerW.locker,
+          lockerMint: govToken.mintAccount,
+          ownerSetter: adminSDK.provider.walletKey,
+        });
+      await expectTX(permalockTX, "Create the Permalock").to.be.fulfilled;
 
-    await assertTXThrows(
-      stakerSDK.permalock.setOwner({
-        permalock,
-        newOwner: stakerSDK.provider.wallet.publicKey,
-      }),
-      PermalockErrors.UnauthorizedNotOwner
-    );
-    await assertTXSuccess(
-      adminSDK.permalock.setOwner({
-        permalock,
-        newOwner: stakerSDK.provider.wallet.publicKey,
-      })
-    );
-    await assertTXThrows(
-      adminSDK.permalock.setOwner({
-        permalock,
-        newOwner: stakerSDK.provider.wallet.publicKey,
-      }),
-      PermalockErrors.UnauthorizedNotOwner
-    );
-    await assertTXSuccess(
-      stakerSDK.permalock.setOwner({
-        permalock,
-        newOwner: adminSDK.provider.wallet.publicKey,
-      })
-    );
+      await assertTXThrows(
+        stakerSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
+      await assertTXSuccess(
+        adminSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        })
+      );
+      await assertTXThrows(
+        adminSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
+      await assertTXThrows(
+        stakerSDK.permalock.setOwner({
+          permalock,
+          newOwner: adminSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
+    });
   });
 });
