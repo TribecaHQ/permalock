@@ -1,6 +1,6 @@
 {
   "name": "@tribecahq/permalock",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "The TypeScript SDK for Tribeca Permalock: voting escrows with infinite lockup.",
   "keywords": [
     "solana",
