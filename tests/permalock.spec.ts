@@ -223,5 +223,34 @@ describe("Permalock", () => {
         PermalockErrors.UnauthorizedNotOwnerSetter
       );
     });
+
+    it("owner setter defaults to system program", async () => {
+      const { lockerW, govToken } = await setupEnvironment({
+        staker: stakerSDK.provider,
+        admin: adminSDK.provider,
+        whitelistEnabled: false,
+      });
+      const { permalock, tx: permalockTX } =
+        await adminSDK.permalock.createPermalock({
+          locker: lockerW.locker,
+          lockerMint: govToken.mintAccount,
+        });
+      await expectTX(permalockTX, "Create the Permalock").to.be.fulfilled;
+
+      await assertTXThrows(
+        stakerSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
+      await assertTXThrows(
+        adminSDK.permalock.setOwner({
+          permalock,
+          newOwner: stakerSDK.provider.wallet.publicKey,
+        }),
+        PermalockErrors.UnauthorizedNotOwnerSetter
+      );
+    });
   });
 });
