@@ -19,6 +19,7 @@ pub struct CreatePermalock<'info> {
             base.key().as_ref()
         ],
         bump,
+        space = 8 + Permalock::LEN,
         payer = payer
     )]
     pub permalock: AccountLoader<'info, Permalock>,
