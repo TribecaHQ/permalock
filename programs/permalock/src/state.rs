@@ -1,5 +1,7 @@
 //! Struct definitions for accounts that hold state.
 
+use anchor_lang::solana_program::pubkey::PUBKEY_BYTES;
+
 use crate::*;
 
 /// A permanently locked [locked_voter::Escrow].
@@ -26,4 +28,9 @@ pub struct Permalock {
     pub owner: Pubkey,
     /// Can modify the owner of the [Permalock]. Set this to [Pubkey::default] to ensure the escrow is non-transferrable.
     pub owner_setter: Pubkey,
+}
+
+impl Permalock {
+    /// Number of bytes of a [Permalock].
+    pub const LEN: usize = PUBKEY_BYTES + 1 + 7 + PUBKEY_BYTES * 5;
 }
