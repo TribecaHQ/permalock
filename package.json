@@ -50,7 +50,7 @@
     "@types/prettier": "^2.4.4",
     "@yarnpkg/doctor": "^3.1.1",
     "bn.js": "^5.2.0",
-    "chai": "=4.3.4",
+    "chai": "=4.3.7",
     "eslint": "^8.11.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-import": "^2.25.4",
