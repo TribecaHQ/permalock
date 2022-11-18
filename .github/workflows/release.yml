@@ -66,7 +66,7 @@ jobs:
           extraPullNames: saber
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - uses: Swatinem/rust-cache@v1
+      - uses: Swatinem/rust-cache@v2
       - name: Publish crates
         run: nix shell .#env-release --command cargo publish --token ${{ secrets.CARGO_PUBLISH_TOKEN }}
 
